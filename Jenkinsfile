@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
         VIRTUAL_ENV = 'venv'
-        PYTHONPATH = "${env.WORKSPACE}"  // Add this line
+        PYTHONPATH = "${env.WORKSPACE}"
     }
     stages {
         stage('Setup') {
@@ -23,6 +23,13 @@ pipeline {
             }
         }
         stage('Test') {
+            steps {
+                script {
+                    bat "${VIRTUAL_ENV}\\Scripts\\activate && pytest"
+                }
+            }
+        }
+        stage('Code Coverage') {
             steps {
                 script {
                     bat "${VIRTUAL_ENV}\\Scripts\\activate && coverage run -m pytest"
