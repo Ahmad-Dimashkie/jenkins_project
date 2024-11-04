@@ -2,6 +2,7 @@ pipeline {
     agent any
     environment {
         VIRTUAL_ENV = 'venv'
+        PYTHONPATH = "${env.WORKSPACE}"  // Add this line
     }
     stages {
         stage('Setup') {
