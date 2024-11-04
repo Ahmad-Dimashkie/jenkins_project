@@ -44,7 +44,7 @@ pipeline {
         stage('Security Scan') {
             steps {
                 script {
-                    bat "${VIRTUAL_ENV}\\Scripts\\activate && bandit -r . > bandit_report.txt"
+                    bat "${VIRTUAL_ENV}\\Scripts\\activate && bandit -r . --quiet > bandit_report.txt 2>&1" // Redirect output and suppress warnings
                 }
             }
         }
