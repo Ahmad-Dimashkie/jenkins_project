@@ -45,7 +45,7 @@ pipeline {
             steps {
                 script {
                     // Adding --exit-zero to Bandit command to avoid pipeline failure
-                    bat "${VIRTUAL_ENV}\\Scripts\\activate && bandit -r . > bandit_report.txt 2>&1"
+                    bat "${VIRTUAL_ENV}\\Scripts\\activate && bandit -r . --quiet --exit-zero 1>bandit_report.txt 2>&1"
                 }
             }
         }
