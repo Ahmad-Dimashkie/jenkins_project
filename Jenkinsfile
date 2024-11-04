@@ -3,7 +3,7 @@ pipeline {
     environment {
         VIRTUAL_ENV = 'venv'
         PYTHONPATH = "${env.WORKSPACE}"
-        PYTHONIOENCODING = 'utf-8'  // Add this line to set UTF-8 encoding for all Python output
+        PYTHONIOENCODING = 'utf-8'  // Set UTF-8 encoding for all Python output
     }
     stages {
         stage('Setup') {
@@ -13,6 +13,7 @@ pipeline {
                         bat "python -m venv ${VIRTUAL_ENV}"
                     }
                     bat "${VIRTUAL_ENV}\\Scripts\\activate && pip install -r requirements.txt"
+                    bat "${VIRTUAL_ENV}\\Scripts\\activate && pip freeze"  // List installed packages
                 }
             }
         }
@@ -33,6 +34,7 @@ pipeline {
         stage('Code Coverage') {
             steps {
                 script {
+                    bat "${VIRTUAL_ENV}\\Scripts\\activate && pip install pytest"  // Ensure pytest is available
                     bat "${VIRTUAL_ENV}\\Scripts\\activate && coverage run -m pytest"
                     bat "${VIRTUAL_ENV}\\Scripts\\activate && coverage report"
                     bat "${VIRTUAL_ENV}\\Scripts\\activate && coverage html"
@@ -42,7 +44,6 @@ pipeline {
         stage('Security Scan') {
             steps {
                 script {
-                    // Run Bandit with UTF-8 encoding explicitly set
                     bat "${VIRTUAL_ENV}\\Scripts\\activate && bandit -r . > bandit_report.txt"
                 }
             }
