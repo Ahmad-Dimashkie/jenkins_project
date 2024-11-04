@@ -32,7 +32,8 @@ pipeline {
         stage('Code Coverage') {
             steps {
                 script {
-                    bat "${VIRTUAL_ENV}\\Scripts\\activate && coverage run -m pytest"
+                    // Activate the environment, install pytest if necessary, and run coverage
+                    bat "${VIRTUAL_ENV}\\Scripts\\activate && pip install pytest && coverage run -m pytest"
                     bat "${VIRTUAL_ENV}\\Scripts\\activate && coverage report"
                     bat "${VIRTUAL_ENV}\\Scripts\\activate && coverage html"
                 }
